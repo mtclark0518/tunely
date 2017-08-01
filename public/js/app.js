@@ -105,6 +105,7 @@ function renderAlbum(album) {
                 "</div>" + // end of panel-body
 
                 "<div class='panel-footer'>" +
+                  "<button class='btn btn-primary add-song'>Add Song</button>" +
                 "</div>" +
 
               "</div>" +
