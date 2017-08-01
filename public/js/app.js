@@ -48,9 +48,24 @@ function handleSuccess(json) {
     console.log(json);
     renderAlbum(json);
 }
+
 function handleError(json) {
     console.log(json);
 }
+
+function buildSongsHtml(songs) {
+    var songText = "    –";
+    songs.forEach(function (song) {
+        songText = songText + " (" + song.trackNumber + ") " + song.name + "    –";
+    });
+    var songsHtml = " " + " " + songText + " " + " ";
+    return songsHtml;
+
+}
+
+
+
+
 function renderAlbum(album) {
 
     var albumHtml =
@@ -78,6 +93,10 @@ function renderAlbum(album) {
                           "<h4 class='inline-header'>Released date:</h4>" +
                           "<span class='album-releaseDate'>" + album.releaseDate + "</span>" +
                         "</li>" +
+                        "<li class='list-group-item'>" +
+                          "<h4 class='inline-header'>Songs</h4>" +
+                          "<span class='album-songs'>" + buildSongsHtml(album.songs) + "</span>" +
+                        "</li>" +
                      "</ul>" +
                     "</div>" +
                   "</div>" +
@@ -94,6 +113,7 @@ function renderAlbum(album) {
 
   // render to the page with jQuery
     $albums.append(albumHtml);
+
 }
 $(document).ready(function () {
     console.log('app.js loaded!');
