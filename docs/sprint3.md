@@ -179,7 +179,7 @@ $('#albums').on('click', '.add-song', function(e) {
 <detail><summary>Hint: setting data-album-id</summary>
 
 ```js
-$('#songModal').data('album-id', currentAlbumId);
+$('#songModal').data('album-id', id);
 ```
 
 </detail>

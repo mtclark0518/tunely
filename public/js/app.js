@@ -35,6 +35,8 @@ sampleAlbums.push({
 
 var i;
 var $albums = $("#albums");
+var $addSong = $(".add-song");
+var id;
 
 
 
@@ -105,7 +107,7 @@ function renderAlbum(album) {
                 "</div>" + // end of panel-body
 
                 "<div class='panel-footer'>" +
-                  "<button class='btn btn-primary add-song'>Add Song</button>" +
+                  "<button() class='btn btn-primary add-song'>Add Song</button>" +
                 "</div>" +
 
               "</div>" +
@@ -119,9 +121,11 @@ function renderAlbum(album) {
 $(document).ready(function () {
     console.log('app.js loaded!');
 
-    // for (i = 0; i < sampleAlbums.length; i++) {
-    //     renderAlbum(sampleAlbums[i]);
-    // }
+  $('#albums').on('click', '.add-song', function (e) {
+    var id = $(this).parents('.album').data('album-id');
+    console.log(id);
+    $('#songModal').data('album-id', id).modal();
+  });
 
 
 //AJAX//
