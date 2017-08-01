@@ -43,8 +43,15 @@ var $albums = $("#albums");
 
 
 // this function takes a single album and renders it to the page
+
+function handleSuccess(json) {
+    console.log(json);
+    return json;
+}
+function handleError(json) {
+    console.log(json);
+}
 function renderAlbum(album) {
-  console.log('rendering album:', album);
 
     var albumHtml =
             "<!-- one album -->" +
@@ -95,6 +102,8 @@ $(document).ready(function () {
     //     renderAlbum(sampleAlbums[i]);
     // }
 
+
+//AJAX//
     var albums = $.get("http://localhost:3000/api/albums")
             .done(function (data) {
                 var parsedAlbum = JSON.parse(albums.responseText);
@@ -103,6 +112,19 @@ $(document).ready(function () {
                     renderAlbum(parsedAlbum[i]);
                 }
             });
+
+    $("form").on("submit", function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            method: "post",
+            url: "/api/albums",
+            data: formData,
+            success: handleSuccess,
+            error: handleError
+        });
+        $(this).trigger("reset");
+    });
 
 
 });
