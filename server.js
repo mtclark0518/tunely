@@ -16,7 +16,6 @@ app.use(express.static(__dirname + '/public'));
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 /* hard-coded data */
-var albums = [];
 
 
 
