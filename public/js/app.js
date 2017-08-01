@@ -46,7 +46,7 @@ var $albums = $("#albums");
 
 function handleSuccess(json) {
     console.log(json);
-    return json;
+    renderAlbum(json);
 }
 function handleError(json) {
     console.log(json);
