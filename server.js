@@ -63,6 +63,37 @@ app.post('/api/albums', function (req, res) {
     
 });
 
+app.get('/api/albums/:id', function(req, res) {
+  var thisId = req.params.album_id;  
+
+  db.Album.get({ id: req.params.album_id }, function(error, album) {
+    if(error) return console.log("error: " + error);
+    res.json(album);
+    });
+  });
+
+app.post('/api/albums/:album_id/songs', function (req, res) {
+  var thisId = req.params.album_id;
+  db.Song.create({
+    name: req.body.name,
+    trackNumber: req.body.trackNumber
+  }, function (err, song) {
+      if (err) return console.log("error: " + err);
+    
+      db.Album.findById(thisId, function(err, album) {
+        if (err) return console.log("error: " + err);
+        album.songs.push(song);
+        album.save(function (err) {
+          if (err) return console.log("error: " + err);
+          console.log(album.songs);
+          res.json(album);
+        });
+      });
+    });
+  });
+
+
+
 /**********
  * SERVER *
  **********/

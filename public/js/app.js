@@ -37,6 +37,9 @@ var i;
 var $albums = $("#albums");
 var $addSong = $(".add-song");
 var id;
+var $newSong = $("#songModal");
+var $saveSong = $("#saveSong");
+var $song_modal;
 
 
 
@@ -47,7 +50,6 @@ var id;
 // this function takes a single album and renders it to the page
 
 function handleSuccess(json) {
-    console.log(json);
     renderAlbum(json);
 }
 
@@ -116,15 +118,57 @@ function renderAlbum(album) {
 
   // render to the page with jQuery
     $albums.append(albumHtml);
-
 }
+
+
+function handleNewSongSubmit(e) {
+  e.preventDefault();
+  var $albumId = $('#songModal').data('album-id');
+  var albumDiv = $('div').find('[ data-album-id= ' + $albumId + ']');
+  console.log(albumDiv);
+  var $songName = $('#songName').val();
+  var $trackNumber = $('#trackNumber').val();
+  var parseNumber = parseInt($trackNumber);
+  
+  var $songData = { 'name' : $songName, 'trackNumber' : parseNumber };
+  
+  $.ajax({
+    method: 'post',
+    url: '/api/albums/' + $albumId + '/songs',
+    data: $songData,
+    error: handleError,
+    success: function(json){
+      albumDiv.remove();
+      renderAlbum(json);
+      console.log('poop');
+    }
+  });
+      // console.log($albumId.);
+      // $.get('api/albums/' + $albumId + '/songs',
+      // });
+      $('#songName').val("");
+      $('#trackNumber').val("");
+      $('#songModal').modal('hide');
+
+}    
+
+
 $(document).ready(function () {
     console.log('app.js loaded!');
+  
+
 
   $('#albums').on('click', '.add-song', function (e) {
     var id = $(this).parents('.album').data('album-id');
-    console.log(id);
-    $('#songModal').data('album-id', id).modal();
+    var $song_modal = $('#songModal').data('album-id', id);
+    $song_modal.modal();
+    $song_modal.on('click', '#saveSong', function(e) {
+        handleNewSongSubmit(e);
+        // $.ajax({
+        //   method: 'get',
+        //   url: '/'
+        // });
+    });
   });
 
 
@@ -133,10 +177,10 @@ $(document).ready(function () {
             .done(function (data) {
                 var parsedAlbum = JSON.parse(albums.responseText);
                 for (i = 0; i < parsedAlbum.length; i++) {
-                    console.log(parsedAlbum[i]);
                     renderAlbum(parsedAlbum[i]);
                 }
             });
+
 
     $("form").on("submit", function (event) {
         event.preventDefault();
